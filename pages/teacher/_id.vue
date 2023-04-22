@@ -12,7 +12,7 @@
         <section class="fl t-infor-box c-desc-content">
           <div class="mt20 ml20">
             <section class="t-infor-pic">
-              <img :src="teacher.avatar" :alt="teacher.name">
+              <img :src="teacher.avatar" :alt="teacher.name" class="img">
             </section>
             <h3 class="hLh30">
               <span class="fsize24 c-333">{{ teacher.name }}
@@ -98,3 +98,9 @@ export default {
   // }
 }
 </script>
+<style type="text/css">
+  .img{
+    width:320px;
+    height:320px;
+  }
+</style>

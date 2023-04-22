@@ -1,5 +1,4 @@
 <template>
-
   <div>
 
     <div v-for="(teacher, index) in items" :key="index">

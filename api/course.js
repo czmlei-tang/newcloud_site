@@ -28,5 +28,14 @@ export default {
       url: `/api/vod/media/get-play-auth/${vid}`,
       method: 'get'
     })
+  },
+  getCourses(course) {
+    return request({
+      url: `/api/edu/course/like/course`,
+      method: 'get',
+      params: {
+        course: course
+      }
+    })
   }
 }

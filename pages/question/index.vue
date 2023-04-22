@@ -5,9 +5,16 @@
         <div class="fl col-7">
           <section class="mr30 pt10">
             <section class="c-infor-tabTitle c-tab-title">
-              <a href="javascript: void(0)" title="全部问答" onclick="submitForm(0,'type')" class="current">全部问答</a>
-              <a href="javascript: void(0)" title="课程问答" onclick="submitForm(1,'type')">课程问答</a>
-              <a href="javascript: void(0)" title="学习分享" onclick="submitForm(2,'type')">学习分享</a>
+              <a
+                :class="{current:!$route.query.subjectId||Number($route.query.subjectId)===0}"
+                href="javascript: void(0)"
+                title="全部问答"
+                @click="searchAll(0)">全部问答</a>
+              <a
+                :class="{current:Number($route.query.subjectId)===1}"
+                href="javascript: void(0)"
+                title="课程问答"
+                @click="searchAll(1)">课程问答</a>
             </section>
             <div class="js-wrap">
               <section class="fr">
@@ -16,33 +23,46 @@
               </section>
               <section class="fl">
                 <ol class="js-tap clearfix">
-                  <li class="current bg-orange"><a onclick="submitForm('addTime','order')" href="javascript:void(0)" title="最新">最新</a></li>
-                  <li><a onclick="submitForm('replycount','order')" href="javascript:void(0)" title="热门">热门</a></li>
-                  <li><a onclick="submitForm('status0','order')" href="javascript:void(0)" title="等待回答">等待回答</a></li>
+                  <li :class="{'current bg-orange':$route.query.gmtCreate}"><a
+                    href="javascript:void(0)"
+                    title="最新"
+                    @click="searchGmtCreate(1)">最新</a></li>
+                  <li :class="{'current bg-orange':$route.query.watchNumber}"><a
+                    href="javascript:void(0)"
+                    title="热门"
+                    @click="searchWatchNumber(1)">热门</a>
+                  </li>
+                  <li :class="{'current bg-orange':$route.query.answerNumber}"><a
+                    href="javascript:void(0)"
+                    title="等待回答"
+                    @click="searchAnswerNumber(1)">等待回答</a>
+                  </li>
                 </ol>
               </section>
             </div>
             <!-- /问题列表 开始 -->
             <div class="q-list">
-              <section class="q-all-list">
+              <section v-if="commentList.length>0" class="q-all-list">
                 <ul>
-                  <li>
+                  <li
+                    v-for="item in commentList"
+                    :key="item.id">
                     <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/02.jpg" alt="">
+                      <img :src="item.avatar" alt="&quot;&quot;&quot;">
                       <p class="hLh30 txtOf">
-                        <span class="c-999"> goddess</span>
+                        <span class="c-999"> {{ item.nickname }}</span>
                       </p>
                     </aside>
                     <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
+                      <a :href="'/question/'+item.id" class="replyBrowseNum" title="">
                         <div class="replyNum">
-                          <span class="r-b-num">1</span>
+                          <span class="r-b-num">{{ item.answerNumber }}</span>
                           <p class="hLh30">
                             <span class="c-999 f-fA">回答数</span>
                           </p>
                         </div>
                         <div class="browseNum">
-                          <span class="r-b-num">93</span>
+                          <span class="r-b-num">{{ item.watchNumber }}</span>
                           <p class="hLh30">
                             <span class="c-999 f-fA">浏览数</span>
                           </p>
@@ -50,323 +70,25 @@
                       </a>
                       <h3 class="hLh30 txtOf">
                         <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">Premiere视频教学视频,大神分享下好吗</a>
+                        <a :href="'/question/'+item.id" title="" class="fsize16 c-333 vam">{{ item.content }}</a>
                       </h3>
                       <h3 class="hLh30 txtOf mt5">
                         <em class="icon16 q-hd">&nbsp;</em>
                         <span class="fsize12 c-999 vam"> <tt class="c-green f-fM mr5">[最佳回答]</tt>
-                          premiere是一款常用的视频编辑软件，由Adobe公司推出。现在常用的有CS4 CS5 CS6等版本。是一款编辑画面质量比较好的软件，有较好的兼容性，且可以与adobe公司推出的其他软件相互协作。目前这款软件广泛应用于广告制作和电视节目制作中。 其最新版本为Adobe Premiere Pro CC。</span>
-                          <!-- 采纳最佳显示最佳答案内容 -->
+                          {{ item.bestAsk }}
+                        </span>
+                        <!-- 采纳最佳显示最佳答案内容 -->
                       </h3>
                       <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:31</span>
+                        <span class="c-ccc fl vam">{{ item.gmtCreate }}</span>
                         <section class="fl ml20 pt10">
                           <div class="taglist clearfix">
-                            <a title="Premiere" data-id="5" onclick="submitForm('5','questionsTagId')" class="list-tag" href="javascript:;">Premiere</a>
-                          </div>
-                        </section>
-                        <div class="clear"/>
-                      </div>
-                    </section>
-                  </li>
-                  <li>
-                    <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/03.jpg" alt="">
-                      <p class="hLh30 txtOf">
-                        <span class="c-999"> 小少爷</span>
-                      </p>
-                    </aside>
-                    <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
-                        <div class="replyNum">
-                          <span class="r-b-num">2</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">回答数</span>
-                          </p>
-                        </div>
-                        <div class="browseNum">
-                          <span class="r-b-num">22</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">浏览数</span>
-                          </p>
-                        </div>
-                      </a>
-                      <h3 class="hLh30 txtOf">
-                        <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">Web App开发教程,有没有分享下</a>
-                      </h3>
-                      <h3 class="hLh30 txtOf mt5">
-                        <em class="icon16 q-hd">&nbsp;</em>
-                        <span class="fsize12 c-999 vam"> <tt class="c-green f-fM mr5">[最佳回答]</tt>
-                          支持</span>
-                          <!-- 采纳最佳显示最佳答案内容 -->
-                      </h3>
-                      <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:27</span>
-                        <section class="fl ml20 pt10">
-                          <div class="taglist clearfix">
-                            <a title="WebApp" data-id="11" onclick="submitForm('11','questionsTagId')" class="list-tag" href="javascript:;">WebApp</a>
-                          </div>
-                        </section>
-                        <div class="clear"/>
-                      </div>
-                    </section>
-                  </li>
-                  <li>
-                    <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/03.jpg" alt="">
-                      <p class="hLh30 txtOf">
-                        <span class="c-999"> 小少爷</span>
-                      </p>
-                    </aside>
-                    <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
-                        <div class="replyNum">
-                          <span class="r-b-num">3</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">回答数</span>
-                          </p>
-                        </div>
-                        <div class="browseNum">
-                          <span class="r-b-num">10</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">浏览数</span>
-                          </p>
-                        </div>
-                      </a>
-                      <h3 class="hLh30 txtOf">
-                        <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">JavaScript刷新页面方法大全</a>
-                      </h3>
-                      <h3 class="hLh30 txtOf mt5">
-                        <em class="icon16 q-hd">&nbsp;</em>
-                        <span class="fsize12 c-999 vam"> <tt class="c-green f-fM mr5">[最佳回答]</tt>
-                          我来点个赞</span>
-                          <!-- 采纳最佳显示最佳答案内容 -->
-                      </h3>
-                      <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:26</span>
-                        <section class="fl ml20 pt10">
-                          <div class="taglist clearfix">
-                            <a title="JavaScript" data-id="10" onclick="submitForm('10','questionsTagId')" class="list-tag" href="javascript:;">JavaScript</a>
-                          </div>
-                        </section>
-                        <div class="clear"/>
-                      </div>
-                    </section>
-                  </li>
-                  <li>
-                    <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/01.jpg" alt="">
-                      <p class="hLh30 txtOf">
-                        <span class="c-999"> Helen</span>
-                      </p>
-                    </aside>
-                    <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
-                        <div class="replyNum">
-                          <span class="r-b-num">4</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">回答数</span>
-                          </p>
-                        </div>
-                        <div class="browseNum">
-                          <span class="r-b-num">106</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">浏览数</span>
-                          </p>
-                        </div>
-                      </a>
-                      <h3 class="hLh30 txtOf">
-                        <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">我是如何自学Android，资料分享（2015 版）</a>
-                      </h3>
-                      <h3 class="hLh30 txtOf mt5">
-                        <em class="icon16 q-hd">&nbsp;</em>
-                        <span class="fsize12 c-999 vam"> <tt class="c-ccc f-fM mr5">[最新回答]</tt> 分享的东西很全</span>
-                        <!-- 有回答时显示最新一条的回答内容 -->
-                      </h3>
-                      <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:16</span>
-                        <section class="fl ml20 pt10">
-                          <div class="taglist clearfix">
-                            <a title="Android" data-id="8" onclick="submitForm('8','questionsTagId')" class="list-tag" href="javascript:;">Android</a>
-                          </div>
-                        </section>
-                        <div class="clear"/>
-                      </div>
-                    </section>
-                  </li>
-                  <li>
-                    <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/01.jpg" alt="">
-                      <p class="hLh30 txtOf">
-                        <span class="c-999"> Helen</span>
-                      </p>
-                    </aside>
-                    <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
-                        <div class="replyNum">
-                          <span class="r-b-num">1</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">回答数</span>
-                          </p>
-                        </div>
-                        <div class="browseNum">
-                          <span class="r-b-num">18</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">浏览数</span>
-                          </p>
-                        </div>
-                      </a>
-                      <h3 class="hLh30 txtOf">
-                        <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">我的MYSQL日志学习心得,给大家分享</a>
-                      </h3>
-                      <h3 class="hLh30 txtOf mt5">
-                        <em class="icon16 q-hd">&nbsp;</em>
-                        <span class="fsize12 c-999 vam"> <tt class="c-green f-fM mr5">[最佳回答]</tt>
-                          不错</span>
-                          <!-- 采纳最佳显示最佳答案内容 -->
-                      </h3>
-                      <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:14</span>
-                        <section class="fl ml20 pt10">
-                          <div class="taglist clearfix">
-                            <a title="Mysql" data-id="7" onclick="submitForm('7','questionsTagId')" class="list-tag" href="javascript:;">Mysql</a>
-                          </div>
-                        </section>
-                        <div class="clear"/>
-                      </div>
-                    </section>
-                  </li>
-                  <li>
-                    <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/01.jpg" alt="">
-                      <p class="hLh30 txtOf">
-                        <span class="c-999"> Helen</span>
-                      </p>
-                    </aside>
-                    <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
-                        <div class="replyNum">
-                          <span class="r-b-num">1</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">回答数</span>
-                          </p>
-                        </div>
-                        <div class="browseNum">
-                          <span class="r-b-num">12</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">浏览数</span>
-                          </p>
-                        </div>
-                      </a>
-                      <h3 class="hLh30 txtOf">
-                        <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">photoshop怎么抠图 ,能详细点吗</a>
-                      </h3>
-                      <h3 class="hLh30 txtOf mt5">
-                        <em class="icon16 q-hd">&nbsp;</em>
-                        <span class="fsize12 c-999 vam"> <tt class="c-green f-fM mr5">[最佳回答]</tt>
-                          第一步，打开ps，打开你要修改的图片。文件---打开就可以了。
-                          如果你并不追求完美的效果，而只是想快速一些，就选择快速选择工具，如图所示。用鼠标点击一下这里。
-                          然后用鼠标左键在图片上想抠出来的区域拖动，直到选择好你想选择的区域之后，点击ctrl+c组合键复制。然后新建一个空白图片。在此空白图片上粘贴，就出现了你刚才抠出来的图片了。
-                          如果你想得到更完美的抠图效果 ，可以使用铅笔工具 ，如图所示。
-                          用钢笔工具在图像的边缘定出若二个点，如图所示，确定完成之后按crtl+回车键选择，然后复制，新建空白图片。
-                          7在空白图片中粘贴，刚才抠出来的图便出现了。由于时间关系 ，我的抠图并不是十分准确。</span>
-                          <!-- 采纳最佳显示最佳答案内容 -->
-                      </h3>
-                      <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:11</span>
-                        <section class="fl ml20 pt10">
-                          <div class="taglist clearfix">
-                            <a title="Photoshop" data-id="6" onclick="submitForm('6','questionsTagId')" class="list-tag" href="javascript:;">Photoshop</a>
-                          </div>
-                        </section>
-                        <div class="clear"/>
-                      </div>
-                    </section>
-                  </li>
-                  <li>
-                    <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/01.jpg" alt="">
-                      <p class="hLh30 txtOf">
-                        <span class="c-999"> Helen</span>
-                      </p>
-                    </aside>
-                    <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
-                        <div class="replyNum">
-                          <span class="r-b-num">0</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">回答数</span>
-                          </p>
-                        </div>
-                        <div class="browseNum">
-                          <span class="r-b-num">5</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">浏览数</span>
-                          </p>
-                        </div>
-                      </a>
-                      <h3 class="hLh30 txtOf">
-                        <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">jbpm5.4 执行TaskClient.start(taskId, userId, responseHandler);</a>
-                      </h3>
-                      <h3 class="hLh30 txtOf mt5">
-                        <em class="icon16 q-hd">&nbsp;</em>
-                        <span class="fsize12 c-999 vam">哈~~~ 此问题大家还有苦思冥想中...</span>
-                        <!-- 没有回答时的内容 -->
-                      </h3>
-                      <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:08</span>
-                        <section class="fl ml20 pt10">
-                          <div class="taglist clearfix">
-                            <a title="JAVA" data-id="1" onclick="submitForm('1','questionsTagId')" class="list-tag" href="javascript:;">JAVA</a>
-                          </div>
-                        </section>
-                        <div class="clear"/>
-                      </div>
-                    </section>
-                  </li>
-                  <li>
-                    <aside class="q-head-pic">
-                      <img src="~/assets/photo/customer/01.jpg" alt="">
-                      <p class="hLh30 txtOf">
-                        <span class="c-999">Helen</span>
-                      </p>
-                    </aside>
-                    <section class="q-txt-box">
-                      <a class="replyBrowseNum" href="question/1" title="">
-                        <div class="replyNum">
-                          <span class="r-b-num">1</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">回答数</span>
-                          </p>
-                        </div>
-                        <div class="browseNum">
-                          <span class="r-b-num">16</span>
-                          <p class="hLh30">
-                            <span class="c-999 f-fA">浏览数</span>
-                          </p>
-                        </div>
-                      </a>
-                      <h3 class="hLh30 txtOf">
-                        <em class="icon16 q-tw">&nbsp;</em>
-                        <a href="question/1" title="" class="fsize16 c-333 vam">谁知道支付宝即时到账接口中的有卡就能付没有了怎么回事</a>
-                      </h3>
-                      <h3 class="hLh30 txtOf mt5">
-                        <em class="icon16 q-hd">&nbsp;</em>
-                        <span class="fsize12 c-999 vam"> <tt class="c-green f-fM mr5">[最佳回答]</tt>
-                          能不能详细的描述下</span>
-                          <!-- 采纳最佳显示最佳答案内容 -->
-                      </h3>
-                      <div class="mt15">
-                        <span class="c-ccc fl vam">2015-09-10 10:07</span>
-                        <section class="fl ml20 pt10">
-                          <div class="taglist clearfix">
-                            <a title="Maya" data-id="2" onclick="submitForm('2','questionsTagId')" class="list-tag" href="javascript:;">Maya</a>
+                            <a
+                              v-if="item.tag"
+                              :href="'/question/'+item.id"
+                              :title="item.tag"
+                              data-id="5"
+                              class="list-tag">{{ item.tag }}</a>
                           </div>
                         </section>
                         <div class="clear"/>
@@ -377,18 +99,31 @@
               </section>
 
               <!-- 公共分页 开始 -->
-              <div>
-                <div class="paging">
-                  <a class="undisable" title>首</a>
-                  <a id="backpage" class="undisable" href="#" title>&lt;</a>
-                  <a href="#" title class="current undisable">1</a>
-                  <a href="#" title>2</a>
-                  <a id="nextpage" href="#" title>&gt;</a>
-                  <a href="#" title>末</a>
-                  <div class="clear"/>
-                </div>
-              </div>
+              <!--              <div>-->
+              <!--                <div class="paging">-->
+              <!--                  <a :class="{undisable: page1===1}" title @click="prePage(1)">首</a>-->
+              <!--                  <a id="backpage" :class="{undisable: page1===1}" href="#" title @click="prePage(page1-1)">&lt;</a>-->
+              <!--                  <a href="#" title class="current undisable">{{ page1 }}</a>-->
+              <!--                  <a v-if="!page1===total" href="#" title @click="nextPage(page1+1)">{{ page1 + 1 }}</a>-->
+              <!--                  <a-->
+              <!--                    id="nextpage"-->
+              <!--                    :class="{undisable: page1===total}"-->
+              <!--                    href="#"-->
+              <!--                    title-->
+              <!--                    @click="nextPage(page1+1)">&gt;</a>-->
+              <!--                  <a :class="{undisable: page1===total/limit}" title @click="nextPage(total/limit)">末</a>-->
+              <!--                  <div class="clear"/>-->
+              <!--                </div>-->
+              <!--              </div>-->
               <!-- 公共分页 结束 -->
+              <el-pagination
+                :current-page="page1"
+                :page-sizes="[5, 10, 15, 20]"
+                :page-size="limit"
+                :page-count="total"
+                layout="total, sizes, prev, pager, next, jumper"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"/>
             </div>
             <!-- /问题列表 结束 -->
           </section>
@@ -396,21 +131,17 @@
         <aside class="fl col-3">
           <div class="mt30 pl10">
             <section class="pt10">
-              <a href="javascript:void(0)" onclick="toAddQuestions()" title="我要提问" class="comm-btn c-btn-5">我要提问</a>
+              <a href="javascript:void(0)" title="我要提问" class="comm-btn c-btn-5" @click="toAddQuestions()">我要提问</a>
             </section>
             <section class="pt20">
               <div class="taglist clearfix">
-                <a onclick="submitForm('0','questionsTagId')" href="javascript:;" class="list-tag " data-id="0" title="JAVA">全部</a>
-                <a title="JAVA" data-id="1" class="list-tag " href="javascript:;" onclick="submitForm('1','questionsTagId')">JAVA</a>
-                <a title="Maya" data-id="2" class="list-tag " href="javascript:;" onclick="submitForm('2','questionsTagId')">Maya</a>
-                <a title="MongoDB" data-id="3" class="list-tag " href="javascript:;" onclick="submitForm('3','questionsTagId')">MongoDB</a>
-                <a title="Premiere" data-id="5" class="list-tag " href="javascript:;" onclick="submitForm('5','questionsTagId')">Premiere</a>
-                <a title="Photoshop" data-id="6" class="list-tag " href="javascript:;" onclick="submitForm('6','questionsTagId')">Photoshop</a>
-                <a title="Mysql" data-id="7" class="list-tag " href="javascript:;" onclick="submitForm('7','questionsTagId')">Mysql</a>
-                <a title="Android" data-id="8" class="list-tag " href="javascript:;" onclick="submitForm('8','questionsTagId')">Android</a>
-                <a title="Unity3D" data-id="9" class="list-tag " href="javascript:;" onclick="submitForm('9','questionsTagId')">Unity3D</a>
-                <a title="JavaScript" data-id="10" class="list-tag " href="javascript:;" onclick="submitForm('10','questionsTagId')">JavaScript</a>
-                <a title="WebApp" data-id="11" class="list-tag " href="javascript:;" onclick="submitForm('11','questionsTagId')">WebApp</a>
+                <a
+                  v-for="tag in tags"
+                  :key="tag.id"
+                  data-id="11"
+                  class="list-tag "
+                  href="javascript:;"
+                  @click="submitForm('11','questionsTagId')">{{ tag.title }}</a>
               </div>
             </section>
             <!-- /标签云 -->
@@ -419,7 +150,17 @@
                 <a href="javascript: void(0)" title="热门问答推荐">热门问答推荐</a>
               </section>
               <div class="q-r-rank-list">
-                <ul id="hotQuestions"><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">4</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/6" title="" class="fsize14 c-333 ml5">我是如何自学Android，资料分享（2015 版）</a>	</h4></li><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">3</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/7" title="" class="fsize14 c-333 ml5">JavaScript刷新页面方法大全</a>	</h4></li><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">2</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/8" title="" class="fsize14 c-333 ml5">Web App开发教程,有没有分享下</a>	</h4></li><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">1</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/9" title="" class="fsize14 c-333 ml5">Premiere视频教学视频,大神分享下好吗</a>	</h4></li><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">1</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/5" title="" class="fsize14 c-333 ml5">我的MYSQL日志学习心得,给大家分享</a>	</h4></li><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">1</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/2" title="" class="fsize14 c-333 ml5">谁知道支付宝即时到账接口中的有卡就能付没有了怎么回事</a>	</h4></li><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">1</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/4" title="" class="fsize14 c-333 ml5">photoshop怎么抠图 ,能详细点吗</a>	</h4></li><li>	<aside class="q-r-r-num">		<div class="replyNum">			<span class="r-b-num">1</span>			<p class="hLh20">				<span class="c-999 f-fA">回答数</span>			</p>		</div>	</aside>	<h4 class="hLh30 txtOf">		<em class="icon16 q-tw">&nbsp;</em>		<a href="/questions/info/1" title="" class="fsize14 c-333 ml5">视频在播放的时候视频会闪一下，但是视频无法正常播放。</a>	</h4></li></ul>
+                <ul id="hotQuestions">
+                  <li v-for="hot in hotCommentList" :key="hot.id">
+                    <aside class="q-r-r-num">
+                      <div class="replyNum"><span class="r-b-num">{{ hot.answerNumber }}</span>
+                      <p class="hLh20"><span class="c-999 f-fA">回答数</span></p></div>
+                    </aside>
+                    <h4 class="hLh30 txtOf"><em class="icon16 q-tw">&nbsp;</em> <a
+                      :href="'/question/'+hot.id"
+                      title=""
+                      class="fsize14 c-333 ml5">{{ hot.content }}</a></h4></li>
+                </ul>
               </div>
             </section>
             <!-- /热门问答排行 -->
@@ -429,5 +170,203 @@
       </section>
     </section>
     <!-- /提问题 结束 -->
+    <!-- /提问题 结束 -->
+    <el-drawer
+      :visible.sync="publishQue"
+      :with-header="true"
+      :direction="direction"
+      size="80%">
+      <el-form :model="que" label-width="80px" size="mini" class="form-que">
+        <el-form-item label="问题：">
+          <el-input v-model="que.content" maxlength="1000" clearable type="textarea"/>
+        </el-form-item>
+        <el-form-item label="标签：">
+          <el-select
+            v-model="que.subjectId"
+            :remote-method="queryTag"
+            :loading="loading"
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入关键词">
+            <el-option
+              v-for="item in tag"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">发布</el-button>
+          <el-button @click="onCancle">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
   </div>
 </template>
+<script>
+import commentApi from '~/api/comment'
+import querystring from 'querystring'
+
+export default {
+  async asyncData(page) {
+    const webCommentQueryVo = {}
+    const query = page.route.query
+    let page1 = query.page1
+    let limit = query.limit
+    console.log(limit)
+    webCommentQueryVo.subjectId = query.subjectId || ''
+    webCommentQueryVo.answerNumber = query.answerNumber || ''
+    webCommentQueryVo.watchNumber = query.watchNumber || ''
+    webCommentQueryVo.gmtCreate = query.gmtCreate || ''
+
+    if (!limit) {
+      limit = 5
+    }
+    if (!page1) {
+      page1 = 1
+    }
+    console.log(limit)
+    const commentListResponse = await commentApi.readQuestions(page1, limit, webCommentQueryVo)
+    const commentList = commentListResponse.data.commentList
+    const hotCommentList = commentListResponse.data.hotComments
+    const tags = commentListResponse.data.tags
+
+    let total = commentListResponse.data.total
+    if (total === 0) {
+      total = 1
+    }
+    return {
+      commentList,
+      total,
+      webCommentQueryVo,
+      hotCommentList,
+      page1,
+      tags,
+      limit
+    }
+  },
+  data() {
+    return {
+      loading: false,
+      publishQue: false,
+      direction: 'btt',
+      que: {},
+      tag: []
+    }
+  },
+  methods: {
+    searchAll(subjectId) {
+      window.location = 'question?subjectId=' + subjectId
+    },
+    searchGmtCreate(i) {
+      const queryObj = {
+        subjectId: this.webCommentQueryVo.subjectId,
+        gmtCreate: i
+      }
+      const querys = querystring.stringify(queryObj)
+      // console.log(querys)
+      window.location = 'question?' + querys
+    },
+    searchWatchNumber(i) {
+      const queryObj = {
+        subjectId: this.webCommentQueryVo.subjectId,
+        watchNumber: i
+      }
+      const querys = querystring.stringify(queryObj)
+      // console.log(querys)
+      window.location = 'question?' + querys
+    },
+    searchAnswerNumber(i) {
+      const queryObj = {
+        subjectId: this.webCommentQueryVo.subjectId,
+        answerNumber: i
+      }
+      const querys = querystring.stringify(queryObj)
+      // console.log(querys)
+      window.location = 'question?' + querys
+    },
+    prePage(i) {
+      const queryObj = {
+        page1: i,
+        subjectId: { 1: this.webCommentQueryVo.subjectId },
+        answerNumber: { 1: this.webCommentQueryVo.answerNumber },
+        watchNumber: { 1: this.webCommentQueryVo.watchNumber },
+        gmtCreate: { 1: this.webCommentQueryVo.gmtCreate }
+      }
+      const querys = querystring.stringify(queryObj)
+      window.location = 'question?' + querys
+    },
+    toAddQuestions() {
+      this.publishQue = true
+    },
+    queryTag(query) {
+      this.loading = true
+      commentApi.getLikeSubjectData(query).then(res => {
+        this.tag = res.data.tag
+        console.log(this.tag)
+      })
+      setTimeout(() => {
+        this.loading = false
+        this.tag = this.tag.filter(item => {
+          return item.title.toLowerCase()
+            .indexOf(query.toLowerCase()) > -1
+        })
+      }, 200)
+    },
+    onSubmit() {
+      if (this.tag.length === 0) {
+        this.$message({
+          message: '评论内容不能为空',
+          type: 'error',
+          duration: 1.5 * 1000
+        })
+      } else {
+        console.log(this.que)
+        this.que.status = 1
+        commentApi.pulishComment(this.que).then(res => {
+          if (res.code === 20000) {
+            this.$message({
+              message: res.message,
+              type: 'success',
+              duration: 1.5 * 1000
+            })
+          }
+        })
+      }
+      console.log(this.que)
+      this.que.content = ''
+      // this.$router.push
+    },
+    onCancle() {
+      this.publishQue = false
+      this.que.content = ''
+    },
+    handleSizeChange(size) {
+      console.log(this.limit)
+      console.log('changePageSize:' + size)
+      this.limit = size
+      console.log(this.limit)
+      this.pageCommon()
+    },
+    handleCurrentChange(page) {
+      console.log('changeCurrentPage:' + page)
+      this.page1 = page
+      console.log(this.page1)
+      this.pageCommon()
+    },
+    pageCommon() {
+      const queryObj = {
+        page1: this.page1,
+        limit: this.limit,
+        subjectId: { 1: this.webCommentQueryVo.subjectId },
+        answerNumber: { 1: this.webCommentQueryVo.answerNumber },
+        watchNumber: { 1: this.webCommentQueryVo.watchNumber },
+        gmtCreate: { 1: this.webCommentQueryVo.gmtCreate }
+      }
+      const querys = querystring.stringify(queryObj)
+      window.location = 'question?' + querys
+    }
+  }
+}
+</script>

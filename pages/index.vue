@@ -64,7 +64,7 @@
               <div class="clear"/>
             </article>
             <section class="tac pt20">
-              <a href="#" title="全部课程" class="comm-btn c-btn-2">全部课程</a>
+              <a href="/course" title="全部课程" class="comm-btn c-btn-2">全部课程</a>
             </section>
           </div>
         </section>

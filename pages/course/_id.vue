@@ -243,7 +243,7 @@ export default {
   created() {
     // 如果未登录，则isBuy是默认值false
     // 如果已登录，则isBuy通过远程接口的返回值赋值
-    const token = cookie.get('guli_jwt_token')
+    const token = cookie.get('newcloud_jwt_token')
     if (token) {
       orderApi.isBuy(this.course.id).then(response => {
         this.isBuy = response.data.isBuy

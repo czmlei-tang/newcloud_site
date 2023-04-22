@@ -69,13 +69,13 @@ export default {
         cookie.set('newcloud_jwt_token', response.data.token, { domain: 'localhost' })
         // debugger
         // 跳转到网站的首页面
-        // window.location.href = '/'
+        window.location = '/'
         // if (document.referrer.indexOf('register') !== -1) { // 如果上一页是注册页面，则跳转到网站的首页
-        //   window.location.href = '/'
+        //   window.location = '/'
         // } else {
-        //   // console.log('cookie before:' + cookie.get('guli_jwt_token'))
+        //   console.log('cookie before:' + cookie.get('newcloud_jwt_token'))
         //   history.go(-1) // 跳转到上一个刚刚访问的页面
-        //   // console.log('cookie after:' + cookie.get('guli_jwt_token'))
+        //   console.log('cookie after:' + cookie.get('newcloud_jwt_token'))
         // }
       })
     }

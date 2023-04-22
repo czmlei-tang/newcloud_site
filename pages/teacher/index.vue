@@ -18,7 +18,7 @@
                 <section class="i-teach-wrap">
                   <div class="i-teach-pic">
                     <a :title="item.name" :href="'/teacher/'+item.id">
-                      <img :src="item.avatar" :alt="item.name" width="142">
+                      <img :src="item.avatar" :alt="item.name" width="142" height="142">
                     </a>
                   </div>
                   <div class="mt10 hLh30 txtOf tac">

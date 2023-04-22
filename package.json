@@ -2,7 +2,7 @@
   "name": "newcloud-site",
   "version": "1.0.0",
   "description": "newcloud学院",
-  "author": "admin <admin@newcloud.com>",
+  "author": "tanglei <tanglei@newcloud.com>",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "element-ui": "^2.4.6",
+    "element-ui": "^2.15.13",
     "js-cookie": "^2.2.0",
     "nuxt": "^2.0.0",
     "querystring": "^0.2.1",

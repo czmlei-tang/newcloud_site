@@ -92,7 +92,7 @@ export default {
     // 获取验证码
     getCodeFun() {
       if (this.sending) return // 如果已点击则退出，防止多次重复提交
-      this.sending = true // 用户已点击
+      this.sending = false // 用户已点击
       registerApi.sendMessage(this.member.mobile).then(response => {
         // 倒计时
         this.timeDown()
