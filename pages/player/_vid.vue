@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="player">
     <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css" >
 
     <script charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"/>
@@ -44,3 +44,15 @@ export default {
   }
 }
 </script>
+<style scoped>
+.player{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#J_prismPlayer {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+</style>
+

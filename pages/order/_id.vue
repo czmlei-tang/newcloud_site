@@ -25,7 +25,7 @@
     </table>
     <div class="Finish">
       <div class="check fr">
-        <el-checkbox v-model="agree">我已阅读并同意<a href="javascript:" target="_blank">《谷粒学院购买协议》</a></el-checkbox>
+        <el-checkbox v-model="agree">我已阅读并同意<a href="javascript:" target="_blank">《NewCloud学院购买协议》</a></el-checkbox>
       </div>
       <div class="clear"/>
       <div class="Main fl">

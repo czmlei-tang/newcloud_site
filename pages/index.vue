@@ -9,7 +9,7 @@
           :key="topBannerAd.id"
           :style="'background:' + topBannerAd.color"
           class="swiper-slide">
-          <a :href="topBannerAd.linkUrl" target="_blank">
+          <a href="javaScript:void(0);" target="_blank" @click="jump(topBannerAd.linkUrl)">
             <img :src="topBannerAd.imageUrl" :alt="topBannerAd.title">
           </a>
         </div>
@@ -45,7 +45,10 @@
                       </div>
                     </section>
                     <h3 class="hLh30 txtOf mt10">
-                      <a :href="'/course/'+course.id" :title="course.title" class="course-title fsize18 c-333">{{ course.title }}</a>
+                      <a
+                        :href="'/course/'+course.id"
+                        :title="course.title"
+                        class="course-title fsize18 c-333">{{ course.title }}</a>
                     </h3>
                     <span v-if="Number(course.price) === 0" class="fr jgTag bg-green">
                       <i class="c-fff fsize12 f-fA">免费</i>
@@ -89,7 +92,9 @@
                       </a>
                     </div>
                     <div class="mt10 hLh30 txtOf tac">
-                      <a :href="'/teacher/'+teacher.id" :title="teacher.name" class="fsize18 c-666">{{ teacher.name }}</a>
+                      <a :href="'/teacher/'+teacher.id" :title="teacher.name" class="fsize18 c-666">{{
+                        teacher.name
+                      }}</a>
                     </div>
                   </section>
                 </li>
@@ -116,7 +121,7 @@ export default {
     // 首页banner数据的获取
     const topBannerAdListResponse = await indexApi.getTopBannerAdList()
     const topBannerAdList = topBannerAdListResponse.data.items
-
+    console.log(topBannerAdList)
     // 获取课程和讲师数据
     const indexDataResponse = await indexApi.getIndexData()
     const courseList = indexDataResponse.data.courseList
@@ -143,6 +148,11 @@ export default {
           prevEl: '.swiper-button-prev'// 前一页dom节点
         }
       }
+    }
+  },
+  methods: {
+    jump(url) {
+      window.location.href = url
     }
   }
 }

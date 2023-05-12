@@ -15,7 +15,8 @@
             <!-- <img id="qrious" src="~/assets/img/erweima.png" alt=""> -->
             <qriously :value="payObj.code_url" :size="338"/>
             <!-- 二维码 {{ payObj.code_url }} -->
-            <p style="color: red; text-align:center;">请使用微信扫一扫</p>
+            <p style="color: red; text-align:center;">请使用微信扫一扫(应为微信支付接口需要商家认证，无法使用，这里跳过扫码点击下面按钮)</p>
+            <el-button v-if="!status" @click="payTemp(payObj.out_trade_no)">支付</el-button>
           </div>
         </div>
         <div class="clearfix"/>
@@ -35,6 +36,7 @@ export default {
   // 在服务器端获取二维码url
   async asyncData(page) {
     const response = await payApi.createNative(page.route.params.id)
+    console.log(response.data)
     return {
       payObj: response.data
     }
@@ -54,7 +56,8 @@ export default {
 
   data() {
     return {
-      timer: null // 定时器
+      timer: null, // 定时器
+      status: false
     }
   },
 
@@ -83,6 +86,13 @@ export default {
           setTimeout(() => {
             this.$router.push({ path: '/course/' + this.payObj.course_id })
           }, 3000)
+        }
+      })
+    },
+    payTemp(orderNo) {
+      orderApi.updateStatusTemp(orderNo).then(res => {
+        if (res.message === 'success') {
+          this.status = true
         }
       })
     }

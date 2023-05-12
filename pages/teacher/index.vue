@@ -10,7 +10,6 @@
             <span class="c-666 fsize14 ml10 vam">没有相关数据，小编正在努力整理中...</span>
           </section>
           <!-- /无数据提示 结束-->
-
           <!-- /数据列表 开始-->
           <article v-if="items.length>0" class="i-teacher-list">
             <ul class="of">
@@ -32,7 +31,6 @@
                   </div>
                 </section>
               </li>
-
             </ul>
             <div class="clear"/>
           </article>

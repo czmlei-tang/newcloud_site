@@ -47,5 +47,12 @@ export default {
       url: `/api/trade/order/query-pay-status/${orderNo}`,
       method: 'get'
     })
+  },
+  updateStatusTemp(orderNo) {
+    return request({
+      // baseURL: 'http://localhost:8170',
+      url: `/api/trade/order/change-pay-status/${orderNo}`,
+      method: 'put'
+    })
   }
 }

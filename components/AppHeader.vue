@@ -38,15 +38,15 @@
             </a>
           </li>
           <!-- 注意undis将当前节点隐藏了 -->
-          <li v-if="userInfo" id="is-login-one" class="mr10">
-            <a id="headerMsgCountId" href="" title="消息">
+          <li v-if="false" id="is-login-one" class="mr10">
+            <a id="headerMsgCountId" :href="'/chat/'+userInfo.id" title="消息">
               <em class="icon18 news-icon">&nbsp;</em>
             </a>
             <q class="red-point">&nbsp;</q>
           </li>
           <!-- 注意undis将当前节点隐藏了 -->
           <li v-if="userInfo" id="is-login-two" class="h-r-user">
-            <a href="/ucenter" title>
+            <a :href="'/ucenter/'+userInfo.id" title>
               <img :src="userInfo.avatar" width="30" height="30" class="vam picImg" alt>
               <span id="userName" class="vam disIb">{{ userInfo.nickname }}</span>
             </a>

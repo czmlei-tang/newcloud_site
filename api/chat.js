@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 
 export default {
-
-  readFriend(page, limit) {
+  readFriends() {
     return request({
-      url: `/api/edu/article/list/${page}/${limit}`,
+      url: `/api/chat/friend/auth/read/friends`,
       method: 'get'
     })
   }

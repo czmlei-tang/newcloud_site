@@ -137,7 +137,7 @@
                         <ul>
                           <!-- 课程章节目录 -->
                           <li v-for="chapter in chapterList" :key="chapter.id" class="lh-menu-stair">
-                            <a title="chapter.title" href="javascript: void(0)" class="current-1">
+                            <a :title="chapter.title" href="javascript: void(0)" class="current-1">
                               <em class="lh-menu-i-1 icon18 mr10"/>{{ chapter.title }}
                             </a>
                             <ol class="lh-menu-ol" style="display: block;">
@@ -227,6 +227,7 @@ export default {
 
   async asyncData(page) {
     const response = await courseApi.getById(page.route.params.id)
+    console.log(response)
     return {
       course: response.data.course,
       chapterList: response.data.chapterVoList
@@ -253,6 +254,7 @@ export default {
       collectApi.isCollect(this.course.id).then(response => {
         this.isCollect = response.data.isCollect
       })
+      // 判断是否免费
     }
   },
 
