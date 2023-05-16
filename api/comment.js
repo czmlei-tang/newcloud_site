@@ -59,6 +59,13 @@ export default {
         title: title
       }
     })
+  },
+
+  checkStatus(id) {
+    return request({
+      url: `api/edu/comment/check/status/${id}`,
+      method: 'get'
+    })
   }
 
 }

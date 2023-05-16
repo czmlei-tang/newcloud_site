@@ -65,11 +65,13 @@
                     </div>
                     <div class="mt20 pr10">
                       <section class="fr">
-                        <span> <a :class="['noter-dy','vam']" href="#i-art-comment" title="评论">
-                          <em class="icon18">&nbsp;</em>(<span id="questionsReplyCount">{{ que.answerNumber }}</span>)
-                        </a> <tt class="noter-zan vam ml10 f-fM" title="赞一下" @click="addPraise(que.id)">
-                          <em class="icon18 current">&nbsp;</em>(<span>{{ que.goodNumber }}</span>)
-                        </tt>
+                        <span>
+                          <a :class="['noter-dy','vam']" href="#i-art-comment" title="评论">
+                            <em class="icon18">&nbsp;</em>(<span id="questionsReplyCount">{{ que.answerNumber }}</span>)
+                          </a>
+                          <tt class="noter-zan vam ml10 f-fM" title="赞一下" @click="addPraise(que.id)">
+                            <em class="icon18">&nbsp;</em>(<span>{{ que.goodNumber }}</span>)
+                          </tt>
                         </span>
                       </section>
                       <span class="c-ccc fl vam">{{ que.gmtCreate }}</span>
@@ -160,7 +162,9 @@
                                 @click="getCommentsById(item.id)">
                                 <em class="icon18">&nbsp;</em>点击加载更多(<span>{{ item.answerNumber }}</span>)
                               </a> <tt class="noter-zan vam ml10 f-fM" title="赞一下" @click="addPraise(item.id)">
-                                <em class="icon18">&nbsp;</em>点赞(<span>{{ item.goodNumber }}</span>)
+                                <em class="icon18">&nbsp;</em>点赞(<span>{{
+                                  item.goodNumber
+                                }}</span>)
                               </tt>
                             </span>
                           </div>
@@ -179,7 +183,11 @@
                                 </div>
                                 <div class="of mt5">
                                   <span class="fr"><font class="fsize12 c-999 ml5">{{ i.gmtCreate }}</font></span> <span
-                                    class="fl"> <tt
+                                    class="fl"> <a
+                                      title="回答"
+                                      class="noter-dy vam">
+                                      <em class="icon18">&nbsp;</em>被回复(<span>{{ i.answerNumber }}</span>)
+                                    </a><tt
                                       class="noter-zan vam ml10 f-fM"
                                       title="赞一下"
                                       @click="addPraise(i.id)">
@@ -212,8 +220,7 @@
                   :key="tag.id"
                   data-id="11"
                   class="list-tag "
-                  href="javascript:;"
-                  @click="submitForm('11','questionsTagId')">{{ tag.title }}</a>
+                  href="javascript:;">{{ tag.title }}</a>
               </div>
             </section>
             <!-- /标签云 -->
@@ -271,24 +278,6 @@
 import commentApi from '~/api/comment'
 
 export default {
-  async asyncData(page) {
-    const id = page.route.params.id
-
-    const response = await commentApi.readOneQuestion(id)
-    const que = response.data.comment
-    const hotCommentList = response.data.hotCommentList
-    const tags = response.data.tags
-    const bestAskVo = response.data.bestAskVo
-    const comments = await commentApi.readComments(id)
-    const nestedComment = comments.data.webComments
-    return {
-      que,
-      hotCommentList,
-      tags,
-      bestAskVo,
-      nestedComment
-    }
-  },
   components: {},
   data() {
     return {
@@ -300,10 +289,40 @@ export default {
         masterId: '',
         desc: ''
       },
-      direction: 'btt'
+      direction: 'btt',
+      que: {},
+      hotCommentList: [],
+      tags: [],
+      bestAskVo: {},
+      nestedComment: []
     }
   },
+  mounted() {
+    const id = this.$route.params.id
+    this.upload(id)
+  },
   methods: {
+    upload(id) {
+      console.log(id)
+      // 核对一下状态，是否是问题
+      commentApi.checkStatus(id).then(res => {
+        if (!res.data.status) {
+          this.$message.error('这个问题好像飞走了，去看看其他的吧')
+          this.$router.push('/question', 2000)
+        } else {
+          commentApi.readOneQuestion(id).then(response => {
+            this.que = response.data.comment
+            this.hotCommentList = response.data.hotCommentList
+            this.tags = response.data.tags
+            this.bestAskVo = response.data.bestAskVo
+          })
+          commentApi.readComments(id).then(res => {
+            this.nestedComment = res.data.webComments
+          })
+        }
+      })
+      console.log(12345678)
+    },
     getCommentsById(id) {
       console.log(id)
       commentApi.readSecondDataComments(id).then(response => {
@@ -314,8 +333,12 @@ export default {
     addPraise(id) {
       console.log(id)
       commentApi.IncreaseGood(id).then(res => {
-        console.log(res)
-      }).catch(() => {
+        if (res.success) {
+          this.$message.success(res.message)
+          this.upload(this.que.id)
+        } else {
+          this.$message.error(res.message)
+        }
       })
     },
     toAddQuestions(id, name, masterId) {
@@ -338,9 +361,10 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
+          this.publishQue = false
+          this.upload(this.que.id)
         }
       })
-      this.publishQue = false
     },
     onCancle() {
       this.publishQue = false
@@ -365,6 +389,7 @@ export default {
 .que_li {
   background: rgba(239, 239, 239, 0.7);
   margin-top: 10px;
+  border-radius: 10px;
 }
 
 </style>

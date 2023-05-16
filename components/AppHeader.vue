@@ -46,7 +46,7 @@
           </li>
           <!-- 注意undis将当前节点隐藏了 -->
           <li v-if="userInfo" id="is-login-two" class="h-r-user">
-            <a :href="'/ucenter/'+userInfo.id" title>
+            <a :href="'/ucenter'" title>
               <img :src="userInfo.avatar" width="30" height="30" class="vam picImg" alt>
               <span id="userName" class="vam disIb">{{ userInfo.nickname }}</span>
             </a>
@@ -55,29 +55,30 @@
           <!-- /未登录显示第1 li；登录后显示第2，3 li -->
         </ul>
         <aside class="h-r-search">
-          <form action="#" method="post">
-            <label class="h-r-s-box">
+          <el-form>
+            <el-form-item>
               <!--              <input :name="queryCourse.courseName" type="text" placeholder="搜索课程" value>-->
               <!--              <button type="submit" class="s-btn" @click="searchCourse">-->
               <!--                <em class="icon18">&nbsp;</em>-->
               <!--              </button>-->
               <el-autocomplete
-                v-model="queryCourse"
+                v-model="title"
                 :fetch-suggestions="searchCourse"
                 :trigger-on-focus="false"
                 prefix-icon="el-icon-search"
                 class="inline-input"
-                placeholder="请输入内容"
+                placeholder="请输入课程内容"
+                value-key="title"
                 @select="handleSelect"
               />
-            </label>
-          </form>
+            </el-form-item>
+          </el-form>
         </aside>
       </div>
       <aside class="mw-nav-btn">
-        <div class="mw-nav-icon" />
+        <div class="mw-nav-icon"/>
       </aside>
-      <div class="clear" />
+      <div class="clear"/>
     </section>
   </header>
   <!-- /公共头 -->
@@ -92,7 +93,8 @@ export default {
   data() {
     return {
       userInfo: null,
-      queryCourse: []
+      queryCourse: [],
+      title: ''
     }
   },
 
@@ -140,7 +142,10 @@ export default {
     },
     handleSelect(item) {
       console.log(item)
+      this.$router.push('/course/' + item.id)
     }
   }
 }
 </script>
+<style scoped>
+</style>

@@ -18,12 +18,12 @@
                       </a>
                     </li>
                     <li>
-                      <a href="uc_avatar.html" title="">
+                      <a href="/ucenter/avatar" title="">
                         个人头像
                       </a>
                     </li>
                     <li>
-                      <a href="uc_password.html" title="">
+                      <a href="/ucenter/password" title="">
                         密码设置
                       </a>
                     </li>
@@ -48,12 +48,12 @@
                   <span>Wo的问答</span>
                   <ol>
                     <li>
-                      <a href="uc_question.html" title="">
+                      <a href="/ucenter/question" title="">
                         Wo的提问
                       </a>
                     </li>
                     <li>
-                      <a href="uc_anwser.html" title="">
+                      <a href="/ucenter/answer" title="">
                         Wo的回答
                       </a>
                     </li>
@@ -61,21 +61,21 @@
                 </li>
               </ul>
 
-              <ul>
-                <li >
-                  <span>Wo的消息</span>
-                  <ol>
-                    <li>
-                      <a href="uc_letter.html" title="">系统消息</a>
-                    </li>
-                  </ol>
-                </li>
-              </ul>
+              <!--              <ul>-->
+              <!--                <li >-->
+              <!--                  <span>Wo的消息</span>-->
+              <!--                  <ol>-->
+              <!--                    <li>-->
+              <!--                      <a href="uc_letter.html" title="">系统消息</a>-->
+              <!--                    </li>-->
+              <!--                  </ol>-->
+              <!--                </li>-->
+              <!--              </ul>-->
             </dd>
           </dl>
         </menu>
 
-        <nuxt-child />
+        <nuxt-child/>
 
         <div class="clear"/>
       </div>
@@ -89,3 +89,5 @@ export default {
 
 }
 </script>
+<style scoped>
+</style>

@@ -7,6 +7,18 @@ export default {
       url: `/api/edu/article/list/${page}/${limit}`,
       method: 'get'
     })
+  },
+  readHotArticles() {
+    return request({
+      url: `/api/edu/article/hot`,
+      method: 'get'
+    })
+  },
+  readArticle(id) {
+    return request({
+      url: `/api/edu/article/read/${id}`,
+      method: 'get'
+    })
   }
 
 }

@@ -99,31 +99,18 @@
               </section>
 
               <!-- 公共分页 开始 -->
-              <!--              <div>-->
-              <!--                <div class="paging">-->
-              <!--                  <a :class="{undisable: page1===1}" title @click="prePage(1)">首</a>-->
-              <!--                  <a id="backpage" :class="{undisable: page1===1}" href="#" title @click="prePage(page1-1)">&lt;</a>-->
-              <!--                  <a href="#" title class="current undisable">{{ page1 }}</a>-->
-              <!--                  <a v-if="!page1===total" href="#" title @click="nextPage(page1+1)">{{ page1 + 1 }}</a>-->
-              <!--                  <a-->
-              <!--                    id="nextpage"-->
-              <!--                    :class="{undisable: page1===total}"-->
-              <!--                    href="#"-->
-              <!--                    title-->
-              <!--                    @click="nextPage(page1+1)">&gt;</a>-->
-              <!--                  <a :class="{undisable: page1===total/limit}" title @click="nextPage(total/limit)">末</a>-->
-              <!--                  <div class="clear"/>-->
-              <!--                </div>-->
-              <!--              </div>-->
-              <!-- 公共分页 结束 -->
+              <!-- 分页组件 -->
               <el-pagination
+                v-if="limit"
                 :current-page="page1"
-                :page-sizes="[5, 10, 15, 20]"
+                :total="total"
                 :page-size="limit"
-                :page-count="total"
-                layout="total, sizes, prev, pager, next, jumper"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"/>
+                :page-sizes="[5, 10, 20]"
+                style="padding: 30px 0; text-align: center"
+                layout="sizes, prev, pager, next, jumper, ->, total"
+                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange"/>
+                <!-- 公共分页 结束 -->
             </div>
             <!-- /问题列表 结束 -->
           </section>
@@ -141,7 +128,7 @@
                   data-id="11"
                   class="list-tag "
                   href="javascript:;"
-                  @click="submitForm('11','questionsTagId')">{{ tag.title }}</a>
+                  @click="submitForm()">{{ tag.title }}</a>
               </div>
             </section>
             <!-- /标签云 -->
@@ -214,7 +201,6 @@ export default {
     const query = page.route.query
     let page1 = query.page1
     let limit = query.limit
-    console.log(limit)
     webCommentQueryVo.subjectId = query.subjectId || ''
     webCommentQueryVo.answerNumber = query.answerNumber || ''
     webCommentQueryVo.watchNumber = query.watchNumber || ''
@@ -226,16 +212,21 @@ export default {
     if (!page1) {
       page1 = 1
     }
-    console.log(limit)
     const commentListResponse = await commentApi.readQuestions(page1, limit, webCommentQueryVo)
+    // 分页数据
     const commentList = commentListResponse.data.commentList
+    // 热门问答
     const hotCommentList = commentListResponse.data.hotComments
+    // 标签
     const tags = commentListResponse.data.tags
-
+    // 总数
     let total = commentListResponse.data.total
-    if (total === 0) {
-      total = 1
-    }
+    console.log(total)
+    console.log(limit)
+    console.log(page1)
+    page1 = parseInt(page1)
+    total = parseInt(total)
+    limit = parseInt(limit)
     return {
       commentList,
       total,
@@ -254,6 +245,8 @@ export default {
       que: {},
       tag: []
     }
+  },
+  created() {
   },
   methods: {
     searchAll(subjectId) {
@@ -315,9 +308,9 @@ export default {
       }, 200)
     },
     onSubmit() {
-      if (this.tag.length === 0) {
+      if (!this.que.subjectId) {
         this.$message({
-          message: '评论内容不能为空',
+          message: '请先选择标签',
           type: 'error',
           duration: 1.5 * 1000
         })
@@ -325,18 +318,19 @@ export default {
         console.log(this.que)
         this.que.status = 1
         commentApi.pulishComment(this.que).then(res => {
-          if (res.code === 20000) {
+          if (res.success === true) {
             this.$message({
               message: res.message,
               type: 'success',
               duration: 1.5 * 1000
             })
+            this.que.content = ''
           }
         })
       }
       console.log(this.que)
-      this.que.content = ''
-      // this.$router.push
+      console.log(this.$route.path)
+      this.$router.push(this.$route.path)
     },
     onCancle() {
       this.publishQue = false
